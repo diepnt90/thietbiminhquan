@@ -248,18 +248,25 @@ function renderSidebar(){
 }
 function renderCatalog(){
   const list = filtered();
-  resultCount.textContent = (activeCat ? `Danh mục: ${activeCat} · ` : "") + `${list.length} / ${PRODUCTS.length} sản phẩm trong bản nháp v0 (ảnh thật từ site cũ, tên một số sản phẩm được khôi phục từ đường dẫn trang gốc).`;
+  const isAllView = !activeCat && !(searchInput.value || "").trim() && priceFilter.value === "all";
+  resultCount.textContent = (activeCat ? `Danh mục: ${activeCat} · ` : "") + `${list.length} / ${PRODUCTS.length} sản phẩm trong bản nháp v0 (ảnh thật từ site cũ, tên một số sản phẩm được khôi phục từ đường dẫn trang gốc).` + (isAllView ? " Ở chế độ Tất cả, mỗi danh mục chỉ hiện 4 sản phẩm đầu." : "");
   emptyMsg.hidden = list.length > 0;
   const catsToShow = activeCat ? [activeCat] : CATEGORIES;
   catalog.innerHTML = catsToShow.map(c => {
     const items = list.filter(p => p.cat === c);
     const idx = CATEGORIES.indexOf(c);
-    const body = items.length ? `<div class="floor-grid">${items.map(p => cardHtml(p, PRODUCTS.indexOf(p))).join("")}</div>`
+    const shown = (isAllView && items.length > 4) ? items.slice(0, 4) : items;
+    const body = items.length ? `<div class="floor-grid">${shown.map(p => cardHtml(p, PRODUCTS.indexOf(p))).join("")}</div>` + ((isAllView && items.length > 4) ? `<button class="floor-more" type="button" data-showcat="${escHtml(c)}">Xem thêm ${items.length - 4} sản phẩm trong danh mục này →</button>` : "")
       : `<p class="floor-empty">Danh mục này trên site cũ hiện chưa có sản phẩm. Gọi 0932.077.059 để hỏi hàng tương đương.</p>`;
-    return `<section class="floor" id="floor-${idx}"><div class="floor-head"><h2><span class="floor-no">${idx + 1}</span>${c}</h2><span class="floor-count">${items.length} sản phẩm</span></div>${body}</section>`;
+    const countText = (isAllView && items.length > 4) ? `Hiện 4 / ${items.length} sản phẩm` : `${items.length} sản phẩm`;
+    return `<section class="floor" id="floor-${idx}"><div class="floor-head"><h2><span class="floor-no">${idx + 1}</span>${c}</h2><span class="floor-count">${countText}</span></div>${body}</section>`;
   }).join("");
   catalog.querySelectorAll("[data-open]").forEach(b => b.addEventListener("click", () => openModal(PRODUCTS[+b.dataset.open])));
   catalog.querySelectorAll("[data-add]").forEach(b => b.addEventListener("click", () => addToCart(PRODUCTS[+b.dataset.add])));
+  catalog.querySelectorAll("[data-showcat]").forEach(b => b.addEventListener("click", () => {
+    activeCat = b.dataset.showcat; renderSidebar(); renderCatalog();
+    const el = document.getElementById("floor-" + CATEGORIES.indexOf(activeCat)); if (el) el.scrollIntoView({behavior:"smooth"});
+  }));
 }
 function updateCart(){
   document.getElementById("cartCount").textContent = cart.length;

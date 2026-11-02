@@ -52,6 +52,8 @@ a{color:inherit}
 .floor-no{background:var(--navy);color:#fff;font-size:13px;border-radius:6px;padding:2px 8px}
 .floor-count{color:var(--muted);font-size:13px;white-space:nowrap}
 .floor-empty{color:var(--muted);margin:0}
+.floor-more{display:block;width:100%;margin-top:16px;padding:11px;border:1px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);font:inherit;font-weight:700;cursor:pointer}
+.floor-more:hover{background:#f1f5f9}
 .floor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px}
 .card{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
 .card-img{border:0;background:#fff;padding:8px;cursor:pointer;aspect-ratio:1/1;display:block}
