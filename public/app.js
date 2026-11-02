@@ -26,8 +26,14 @@ const CATEGORIES = [
   "BỘ ĐÀM",
   "TIỆN ÍCH, ĐỒ DÙNG, PHỤ TÙNG ÔTÔ",
   "MÁY RỬA XE MINI",
-  "HÀNG GIA DỤNG",
-  "LOA - TAI NGHE",
+];
+
+const GROUPS = [
+  {name:"Đo đạc & trắc địa", cats:["MÁY THỦY BÌNH","MÁY TOÀN ĐẠC. KÍNH VĨ","THIẾT BỊ ĐO BẰNG LAZER","THIẾT BỊ CÂN BẰNG TỰ ĐỘNG BẰNG TIA LAZER","THƯỚC ĐO BÁNH XE","THIẾT BỊ ĐO & KIỂM TRA KL","THIẾT BỊ ĐO KYORITSU - NHẬT","DỤNG CỤ ĐO-MITUTOYO"]},
+  {name:"Gia công ống", cats:["MÁY TIỆN REN ỐNG","MÁY CẮT ỐNG THỦY LỰC - MÁY LĂN RÃNH ỐNG","MÁY UỐN ỐNG THỦY LỰC","MÁY HÀN ỐNG HDPE","CỬA CẮT ASADA BEAVER - NHẬT"]},
+  {name:"Thủy lực & cơ khí", cats:["MÁY ĐỘT THỦY LỰC","BƠM THỬ ÁP ASADA - NHẬT","KÍCH THỦY LỰC","MÁY KHOAN TỪ - MAGTRON","MŨI KHOAN NACHI","MÁY GIA CÔNG THANH CÁI","MÁY CHÀ TƯỜNG"]},
+  {name:"Dụng cụ điện & cầm tay", cats:["DỤNG CỤ ĐIỆN METABO-BOSCH","KIM CẮT CÁP","KIM ÉP COS THỦY LỰC","KIM XIẾT ĐAI"]},
+  {name:"Tiện ích & khác", cats:["BỘ ĐÀM","TIỆN ÍCH, ĐỒ DÙNG, PHỤ TÙNG ÔTÔ","MÁY RỬA XE MINI"]},
 ];
 
 const PRODUCTS = [
@@ -237,15 +243,30 @@ function cardHtml(p, i){
   </article>`;
 }
 function renderSidebar(){
-  sidebar.innerHTML = `<button class="side-btn${!activeCat ? " active" : ""}" type="button" data-cat="">Tất cả danh mục <span>${PRODUCTS.length}</span></button>` + CATEGORIES.map(c => {
-    const n = PRODUCTS.filter(p => p.cat === c).length;
-    return `<button class="side-btn${activeCat === c ? " active" : ""}" type="button" data-cat="${escHtml(c)}">${c} <span>${n}</span></button>`;
+  if (activeCat) { for (const g of GROUPS) { if (g.cats.includes(activeCat)) expandedGroups.add(g.name); } }
+  const allBtn = `<button class="side-btn${!activeCat ? " active" : ""}" type="button" data-cat="">Tất cả danh mục <span>${PRODUCTS.length}</span></button>`;
+  const groupsHtml = GROUPS.map(g => {
+    const open = expandedGroups.has(g.name);
+    const total = PRODUCTS.filter(p => g.cats.includes(p.cat)).length;
+    const subs = g.cats.map(c => {
+      const n = PRODUCTS.filter(p => p.cat === c).length;
+      return `<button class="side-btn side-sub-btn${activeCat === c ? " active" : ""}" type="button" data-cat="${escHtml(c)}">${c} <span>${n}</span></button>`;
+    }).join("");
+    return `<div class="side-group"><button class="side-group-btn${open ? " open" : ""}" type="button" data-group="${escHtml(g.name)}"><span>${g.name}</span><span class="side-group-meta"><span>${total}</span><span class="side-arrow">${open ? "▾" : "▸"}</span></span></button><div class="side-sub" ${open ? "" : "hidden"}>${subs}</div></div>`;
   }).join("");
-  sidebar.querySelectorAll(".side-btn").forEach(b => b.addEventListener("click", () => {
-    activeCat = b.dataset.cat || null; renderSidebar(); renderCatalog();
-    if (activeCat) { const el = document.getElementById("floor-" + CATEGORIES.indexOf(activeCat)); if (el) el.scrollIntoView({behavior:"smooth"}); }
+  sidebar.innerHTML = allBtn + groupsHtml;
+  sidebar.querySelectorAll(".side-group-btn").forEach(b => b.addEventListener("click", () => {
+    const name = b.dataset.group;
+    if (expandedGroups.has(name)) expandedGroups.delete(name); else expandedGroups.add(name);
+    renderSidebar();
   }));
+  sidebar.querySelectorAll(".side-sub-btn").forEach(b => b.addEventListener("click", () => {
+    activeCat = b.dataset.cat; renderSidebar(); renderCatalog();
+    const el = document.getElementById("floor-" + CATEGORIES.indexOf(activeCat)); if (el) el.scrollIntoView({behavior:"smooth"});
+  }));
+  sidebar.querySelectorAll(".side-btn[data-cat='']").forEach(b => b.addEventListener("click", () => { activeCat = null; renderSidebar(); renderCatalog(); }));
 }
+let expandedGroups = new Set([GROUPS[0].name]);
 function renderCatalog(){
   const list = filtered();
   const isAllView = !activeCat && !(searchInput.value || "").trim() && priceFilter.value === "all";
