@@ -278,7 +278,7 @@ function renderCatalog(){
     const idx = CATEGORIES.indexOf(c);
     const shown = (isAllView && items.length > 4) ? items.slice(0, 4) : items;
     const body = items.length ? `<div class="floor-grid">${shown.map(p => cardHtml(p, PRODUCTS.indexOf(p))).join("")}</div>` + ((isAllView && items.length > 4) ? `<button class="floor-more" type="button" data-showcat="${escHtml(c)}">Xem thêm ${items.length - 4} sản phẩm trong danh mục này →</button>` : "")
-      : `<p class="floor-empty">Danh mục này trên site cũ hiện chưa có sản phẩm. Gọi 0932.077.059 để hỏi hàng tương đương.</p>`;
+      : `<p class="floor-empty">Không có sản phẩm khớp trong danh mục này. Gọi 0932.077.059 để hỏi hàng tương đương.</p>`;
     const countText = (isAllView && items.length > 4) ? `Hiện 4 / ${items.length} sản phẩm` : `${items.length} sản phẩm`;
     return `<section class="floor" id="floor-${idx}"><div class="floor-head"><h2><span class="floor-no">${idx + 1}</span>${c}</h2><span class="floor-count">${countText}</span></div>${body}</section>`;
   }).join("");
@@ -307,7 +307,6 @@ function openModal(p){
   document.getElementById("modalName").textContent = p.name;
   const priceEl = document.getElementById("modalPrice"); priceEl.textContent = fmt(p.price); priceEl.className = "modal-price" + (p.price ? "" : " contact");
   document.getElementById("modalDesc").textContent = p.desc;
-  document.getElementById("modalOrigin").href = p.url;
   document.getElementById("modalImg").src = p.img; document.getElementById("modalImg").alt = p.name;
   document.getElementById("productModal").showModal();
 }
