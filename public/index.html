@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20261102g">
+<link rel="stylesheet" href="styles.css?v=20261102h">
 </head>
 <body>
 <a class="skip-link" href="#catalog">Bỏ qua tới sản phẩm</a>
@@ -74,12 +74,15 @@
     </div>
   </div>
 
-  <section class="wrap section">
-    <h2>Thương hiệu</h2>
-    <p class="section-sub">Các hãng xuất hiện trong danh mục của cửa hàng.</p>
-    <ul class="brand-strip">
-      <li>Leica</li><li>Bosch</li><li>Mitutoyo</li><li>Metabo</li><li>Kyoritsu</li><li>Nachi</li><li>Asada</li><li>Magtron</li>
-    </ul>
+  <section class="wrap brand-marquee" aria-label="Thương hiệu trong danh mục">
+    <p class="brand-label">Các thương hiệu trong danh mục</p>
+    <div class="marquee">
+      <div class="marquee-track">
+        <ul class="marquee-group"><li>Leica</li><li>Bosch</li><li>Mitutoyo</li><li>Metabo</li><li>Kyoritsu</li><li>Nachi</li><li>Asada</li><li>Magtron</li></ul>
+        <ul class="marquee-group" aria-hidden="true"><li>Leica</li><li>Bosch</li><li>Mitutoyo</li><li>Metabo</li><li>Kyoritsu</li><li>Nachi</li><li>Asada</li><li>Magtron</li></ul>
+      </div>
+    </div>
+    <p class="brand-note">Tên hãng hiển thị dạng chữ — chưa phải logo chính thức của từng hãng, sẽ thay bằng logo thật khi cửa hàng gửi file.</p>
   </section>
 
   <section class="wrap support-strip">

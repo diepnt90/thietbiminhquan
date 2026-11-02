@@ -71,8 +71,17 @@ a{color:inherit}
 .section{margin-top:32px}
 .section h2{margin:0 0 6px}
 .section-sub{color:var(--muted);margin:0 0 14px}
-.brand-strip{list-style:none;margin:0;padding:0;display:flex;gap:10px;flex-wrap:wrap}
-.brand-strip li{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-weight:700}
+.brand-marquee{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 0 12px;margin-top:32px;overflow:hidden}
+.brand-label{font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;margin:0 20px 12px}
+.marquee{overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;width:max-content;animation:brand-scroll 30s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-group{list-style:none;margin:0;padding:0 48px 0 0;display:flex;gap:48px;align-items:center}
+.marquee-group li{font-size:24px;font-weight:800;letter-spacing:.3px;color:var(--navy);white-space:nowrap;display:flex;align-items:center;gap:48px}
+.marquee-group li::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);flex:none}
+@keyframes brand-scroll{to{transform:translateX(-50%)}}
+.brand-note{font-size:13px;color:var(--muted);margin:12px 20px 0}
+@media(prefers-reduced-motion:reduce){.marquee-track{animation:none;flex-wrap:wrap;width:auto}}
 .support-strip{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
 .support-strip div{display:flex;flex-direction:column;gap:2px}
 .support-strip span{color:var(--muted);font-size:14px}
