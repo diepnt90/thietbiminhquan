@@ -249,7 +249,7 @@ function renderSidebar(){
 function renderCatalog(){
   const list = filtered();
   const isAllView = !activeCat && !(searchInput.value || "").trim() && priceFilter.value === "all";
-  resultCount.textContent = (activeCat ? `Danh mục: ${activeCat} · ` : "") + `${list.length} / ${PRODUCTS.length} sản phẩm trong bản nháp v0 (ảnh thật từ site cũ, tên một số sản phẩm được khôi phục từ đường dẫn trang gốc).` + (isAllView ? " Ở chế độ Tất cả, mỗi danh mục chỉ hiện 4 sản phẩm đầu." : "");
+  resultCount.textContent = (activeCat ? `Danh mục: ${activeCat} · ` : "") + `${list.length} / ${PRODUCTS.length} sản phẩm.` + (isAllView ? " Ở chế độ Tất cả, mỗi danh mục chỉ hiện 4 sản phẩm đầu." : "");
   emptyMsg.hidden = list.length > 0;
   const catsToShow = activeCat ? [activeCat] : CATEGORIES;
   catalog.innerHTML = catsToShow.map(c => {

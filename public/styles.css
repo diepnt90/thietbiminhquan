@@ -9,7 +9,6 @@ a{color:inherit}
 .skip-link:focus{left:16px;top:16px;background:#fff;padding:8px 12px;z-index:100}
 .topbar{background:var(--navy);color:#e2e8f0;font-size:13px}
 .topbar-inner{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
-.draft-badge{background:var(--red);color:#fff;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap}
 .topbar-contacts{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}
 .topbar-contacts a{text-decoration:none}
 .header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
@@ -80,12 +79,11 @@ a{color:inherit}
 .marquee-group li{font-size:24px;font-weight:800;letter-spacing:.3px;color:var(--navy);white-space:nowrap;display:flex;align-items:center;gap:48px}
 .marquee-group li::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);flex:none}
 @keyframes brand-scroll{to{transform:translateX(-50%)}}
-.brand-note{font-size:13px;color:var(--muted);margin:12px 20px 0}
 @media(prefers-reduced-motion:reduce){.marquee-track{animation:none;flex-wrap:wrap;width:auto}}
 .support-strip{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
 .support-strip div{display:flex;flex-direction:column;gap:2px}
 .support-strip span{color:var(--muted);font-size:14px}
-.catalog-note,.empty{color:var(--muted);font-size:14px}
+.empty{color:var(--muted);font-size:14px}
 .footer{background:var(--navy);color:#cbd5e1;margin-top:40px;padding:32px 0 20px}
 .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:24px}
 .footer-logo{color:#fff;font-weight:800}
