@@ -4,6 +4,7 @@
   --border:#E2E8F0; --red:#DC2626; --zalo:#0068FF; --radius:16px; --shadow:0 10px 30px rgba(15,23,42,.08);
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--fg);line-height:1.55}
 a{color:var(--accent)} a:hover{color:var(--accent-dark)}
