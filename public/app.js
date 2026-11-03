@@ -258,11 +258,19 @@ function updatePageMeta(){
     if (titleEl) titleEl.textContent = activeCat;
     if (categoryIntroEl){ categoryIntroEl.textContent = intro; categoryIntroEl.hidden = !intro; }
     if (md) md.setAttribute("content", intro + " Thiết bị Minh Quân tư vấn và báo giá qua điện thoại tại Hà Nội và TP.HCM.");
+    const canon = document.getElementById("canonicalLink"); if (canon) canon.setAttribute("href", "https://thietbiminhquan.com/" + slugify(activeCat));
+    const ogT = document.querySelector('meta[property="og:title"]'); if (ogT) ogT.setAttribute("content", activeCat + " | Thiết bị Minh Quân");
+    const ogD = document.querySelector('meta[property="og:description"]'); if (ogD) ogD.setAttribute("content", intro + " Thiết bị Minh Quân tư vấn và báo giá qua điện thoại tại Hà Nội và TP.HCM.");
+    const ogU = document.querySelector('meta[property="og:url"]'); if (ogU) ogU.setAttribute("content", "https://thietbiminhquan.com/" + slugify(activeCat));
   } else {
     document.title = DEFAULT_TITLE;
     if (titleEl) titleEl.textContent = "Danh mục & sản phẩm";
     if (categoryIntroEl){ categoryIntroEl.textContent = qText ? "" : ALL_INTRO; categoryIntroEl.hidden = !!qText; }
     if (md) md.setAttribute("content", DEFAULT_DESC);
+    const canon2 = document.getElementById("canonicalLink"); if (canon2) canon2.setAttribute("href", "https://thietbiminhquan.com/");
+    const ogT2 = document.querySelector('meta[property="og:title"]'); if (ogT2) ogT2.setAttribute("content", DEFAULT_TITLE);
+    const ogD2 = document.querySelector('meta[property="og:description"]'); if (ogD2) ogD2.setAttribute("content", DEFAULT_DESC);
+    const ogU2 = document.querySelector('meta[property="og:url"]'); if (ogU2) ogU2.setAttribute("content", "https://thietbiminhquan.com/");
   }
 }
 
