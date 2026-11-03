@@ -218,6 +218,9 @@ const resultCount = document.getElementById("resultCount");
 const emptyMsg = document.getElementById("emptyMsg");
 
 function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
+function slugify(s){ return s.replace(/Đ/g,"D").replace(/đ/g,"d").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
+function catFromPath(){ const slug = window.location.pathname.replace(/^\/+|\/+$/g,""); if (!slug || slug === "index.html") return null; return CATEGORIES.find(c => slugify(c) === slug) || null; }
+function setCatUrl(){ const url = activeCat ? "/" + slugify(activeCat) : "/"; if (window.location.pathname !== url) history.pushState(null, "", url); }
 function filtered(){
   const q = (searchInput.value || "").toLowerCase().trim();
   const pf = priceFilter.value;
@@ -244,13 +247,13 @@ function cardHtml(p, i){
 }
 function renderSidebar(){
   if (activeCat) { for (const g of GROUPS) { if (g.cats.includes(activeCat)) expandedGroups.add(g.name); } }
-  const allBtn = `<button class="side-btn${!activeCat ? " active" : ""}" type="button" data-cat="">Tất cả danh mục <span>${PRODUCTS.length}</span></button>`;
+  const allBtn = `<a class="side-btn${!activeCat ? " active" : ""}" href="/" data-cat="">Tất cả danh mục <span>${PRODUCTS.length}</span></a>`;
   const groupsHtml = GROUPS.map(g => {
     const open = expandedGroups.has(g.name);
     const total = PRODUCTS.filter(p => g.cats.includes(p.cat)).length;
     const subs = g.cats.map(c => {
       const n = PRODUCTS.filter(p => p.cat === c).length;
-      return `<button class="side-btn side-sub-btn${activeCat === c ? " active" : ""}" type="button" data-cat="${escHtml(c)}">${c} <span>${n}</span></button>`;
+      return `<a class="side-btn side-sub-btn${activeCat === c ? " active" : ""}" href="/${slugify(c)}" data-cat="${escHtml(c)}">${c} <span>${n}</span></a>`;
     }).join("");
     return `<div class="side-group"><button class="side-group-btn${open ? " open" : ""}" type="button" data-group="${escHtml(g.name)}"><span>${g.name}</span><span class="side-group-meta"><span>${total}</span><span class="side-arrow">${open ? "▾" : "▸"}</span></span></button><div class="side-sub" ${open ? "" : "hidden"}>${subs}</div></div>`;
   }).join("");
@@ -260,11 +263,15 @@ function renderSidebar(){
     if (expandedGroups.has(name)) expandedGroups.delete(name); else expandedGroups.add(name);
     renderSidebar();
   }));
-  sidebar.querySelectorAll(".side-sub-btn").forEach(b => b.addEventListener("click", () => {
-    activeCat = b.dataset.cat; renderSidebar(); renderCatalog();
+  sidebar.querySelectorAll(".side-sub-btn").forEach(b => b.addEventListener("click", (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; e.preventDefault();
+    activeCat = b.dataset.cat; setCatUrl(); renderSidebar(); renderCatalog();
     const el = document.getElementById("floor-" + CATEGORIES.indexOf(activeCat)); if (el) el.scrollIntoView({behavior:"smooth"});
   }));
-  sidebar.querySelectorAll(".side-btn[data-cat='']").forEach(b => b.addEventListener("click", () => { activeCat = null; renderSidebar(); renderCatalog(); }));
+  sidebar.querySelectorAll(".side-btn[data-cat='']").forEach(b => b.addEventListener("click", (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; e.preventDefault();
+    activeCat = null; setCatUrl(); renderSidebar(); renderCatalog();
+  }));
 }
 let expandedGroups = new Set([GROUPS[0].name]);
 function renderCatalog(){
@@ -285,7 +292,7 @@ function renderCatalog(){
   catalog.querySelectorAll("[data-open]").forEach(b => b.addEventListener("click", () => openModal(PRODUCTS[+b.dataset.open])));
   catalog.querySelectorAll("[data-add]").forEach(b => b.addEventListener("click", () => addToCart(PRODUCTS[+b.dataset.add])));
   catalog.querySelectorAll("[data-showcat]").forEach(b => b.addEventListener("click", () => {
-    activeCat = b.dataset.showcat; renderSidebar(); renderCatalog();
+    activeCat = b.dataset.showcat; setCatUrl(); renderSidebar(); renderCatalog();
     const el = document.getElementById("floor-" + CATEGORIES.indexOf(activeCat)); if (el) el.scrollIntoView({behavior:"smooth"});
   }));
 }
@@ -314,10 +321,12 @@ document.getElementById("cartBtn").addEventListener("click", openDrawer);
 document.getElementById("stickyCartBtn").addEventListener("click", openDrawer);
 document.getElementById("closeDrawer").addEventListener("click", closeDrawer);
 document.getElementById("drawerBackdrop").addEventListener("click", closeDrawer);
-document.getElementById("clearFilter").addEventListener("click", () => { activeCat = null; searchInput.value = ""; priceFilter.value = "all"; renderSidebar(); renderCatalog(); });
+document.getElementById("clearFilter").addEventListener("click", () => { activeCat = null; setCatUrl(); searchInput.value = ""; priceFilter.value = "all"; renderSidebar(); renderCatalog(); });
+window.addEventListener("popstate", () => { activeCat = catFromPath(); renderSidebar(); renderCatalog(); });
 document.getElementById("modalAdd").addEventListener("click", () => { if (modalProduct) { addToCart(modalProduct); document.getElementById("productModal").close(); } });
 document.getElementById("productModal").addEventListener("click", (e) => { if (e.target === document.getElementById("productModal")) document.getElementById("productModal").close(); });
 searchInput.addEventListener("input", renderCatalog);
 priceFilter.addEventListener("change", renderCatalog);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+activeCat = catFromPath();
 renderSidebar(); renderCatalog(); updateCart();
