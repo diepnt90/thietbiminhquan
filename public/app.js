@@ -540,7 +540,7 @@ function renderCatalog(){
   const list = filtered();
   const qText = (searchInput.value || "").trim();
   const isAllView = !activeCat && !qText && priceFilter.value === "all";
-  resultCount.textContent = qText ? `Tìm “${qText}”: ${list.length} sản phẩm trên toàn shop.` : (activeCat ? `Danh mục: ${activeCat} · ` : "") + `${list.length} / ${PRODUCTS.length} sản phẩm.` + (isAllView ? " Ở chế độ Tất cả, mỗi danh mục chỉ hiện 4 sản phẩm đầu." : "");
+  resultCount.textContent = qText ? `Tìm “${qText}”: ${list.length} sản phẩm trên toàn shop.` : (activeCat ? `Danh mục: ${activeCat} · ` : "") + `${list.length} sản phẩm.`;
   emptyMsg.hidden = list.length > 0;
   const catsToShow = activeCat && !qText ? [activeCat] : (qText || priceFilter.value !== "all" ? CATEGORIES.filter(c => list.some(p => p.cat === c)) : CATEGORIES);
   catalog.innerHTML = catsToShow.map(c => {
