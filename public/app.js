@@ -208,7 +208,7 @@ const PRODUCTS = [
 ];
 
 
-const fmt = (n) => n ? n.toLocaleString("vi-VN") + " đ" : "Liên hệ";
+const fmt = (n) => n ? n.toLocaleString("vi-VN") + " đ" : "";
 let activeCat = null, cart = [], modalProduct = null;
 const sidebar = document.getElementById("sidebar");
 const catalog = document.getElementById("catalog");
@@ -303,7 +303,7 @@ function updateCart(){
   document.getElementById("cartCount").textContent = cart.length;
   document.getElementById("stickyCartCount").textContent = cart.length;
   const listEl = document.getElementById("drawerList");
-  listEl.innerHTML = cart.length ? cart.map((p, i) => `<li><span><strong>${escHtml(p.name)}</strong><br><small>${p.cat} · ${fmt(p.price)}</small></span><button type="button" data-remove="${i}">Xóa</button></li>`).join("")
+  listEl.innerHTML = cart.length ? cart.map((p, i) => `<li><span><strong>${escHtml(p.name)}</strong><br><small>${p.cat}${p.price ? " · " + fmt(p.price) : ""}</small></span><button type="button" data-remove="${i}">Xóa</button></li>`).join("")
     : `<li>Chưa có sản phẩm nào. Bấm “+ Quan tâm” ở một sản phẩm để gom tên cần hỏi giá.</li>`;
   listEl.querySelectorAll("[data-remove]").forEach(b => b.addEventListener("click", () => { cart.splice(+b.dataset.remove, 1); updateCart(); }));
 }
@@ -315,7 +315,7 @@ function openModal(p){
   document.getElementById("modalCat").textContent = p.cat;
   document.getElementById("modalCat2").textContent = p.cat;
   document.getElementById("modalName").textContent = p.name;
-  const priceEl = document.getElementById("modalPrice"); priceEl.textContent = fmt(p.price); priceEl.className = "modal-price" + (p.price ? "" : " contact");
+  const priceEl = document.getElementById("modalPrice"); priceEl.hidden = !p.price; priceEl.textContent = fmt(p.price); priceEl.className = "modal-price";
   document.getElementById("modalDesc").textContent = p.desc;
   document.getElementById("modalImg").src = p.img; document.getElementById("modalImg").alt = p.name;
   document.getElementById("productModal").showModal();
