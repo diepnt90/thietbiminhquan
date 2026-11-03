@@ -220,13 +220,15 @@ const emptyMsg = document.getElementById("emptyMsg");
 function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
 function slugify(s){ return s.replace(/Đ/g,"D").replace(/đ/g,"d").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
 function catFromPath(){ const slug = window.location.pathname.replace(/^\/+|\/+$/g,""); if (!slug || slug === "index.html") return null; return CATEGORIES.find(c => slugify(c) === slug) || null; }
+function normSearch(s){ return s.replace(/Đ/g,"D").replace(/đ/g,"d").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase(); }
 function setCatUrl(){ const url = activeCat ? "/" + slugify(activeCat) : "/"; if (window.location.pathname !== url) history.pushState(null, "", url); }
 function filtered(){
-  const q = (searchInput.value || "").toLowerCase().trim();
+  const qWords = normSearch(searchInput.value || "").trim().split(/\s+/).filter(Boolean);
   const pf = priceFilter.value;
   return PRODUCTS.filter(p => {
-    const okCat = !activeCat || p.cat === activeCat;
-    const okQ = !q || (p.name + " " + p.cat).toLowerCase().includes(q);
+    const okCat = qWords.length ? true : (!activeCat || p.cat === activeCat);
+    const hay = normSearch(p.name + " " + p.cat);
+    const okQ = qWords.every(w => hay.includes(w));
     const okP = pf === "all" || (pf === "priced" ? p.price : !p.price);
     return okCat && okQ && okP;
   });
@@ -276,10 +278,11 @@ function renderSidebar(){
 let expandedGroups = new Set([GROUPS[0].name]);
 function renderCatalog(){
   const list = filtered();
-  const isAllView = !activeCat && !(searchInput.value || "").trim() && priceFilter.value === "all";
-  resultCount.textContent = (activeCat ? `Danh mục: ${activeCat} · ` : "") + `${list.length} / ${PRODUCTS.length} sản phẩm.` + (isAllView ? " Ở chế độ Tất cả, mỗi danh mục chỉ hiện 4 sản phẩm đầu." : "");
+  const qText = (searchInput.value || "").trim();
+  const isAllView = !activeCat && !qText && priceFilter.value === "all";
+  resultCount.textContent = qText ? `Tìm “${qText}”: ${list.length} sản phẩm trên toàn shop.` : (activeCat ? `Danh mục: ${activeCat} · ` : "") + `${list.length} / ${PRODUCTS.length} sản phẩm.` + (isAllView ? " Ở chế độ Tất cả, mỗi danh mục chỉ hiện 4 sản phẩm đầu." : "");
   emptyMsg.hidden = list.length > 0;
-  const catsToShow = activeCat ? [activeCat] : CATEGORIES;
+  const catsToShow = activeCat && !qText ? [activeCat] : (qText || priceFilter.value !== "all" ? CATEGORIES.filter(c => list.some(p => p.cat === c)) : CATEGORIES);
   catalog.innerHTML = catsToShow.map(c => {
     const items = list.filter(p => p.cat === c);
     const idx = CATEGORIES.indexOf(c);
