@@ -316,6 +316,7 @@ document.getElementById("closeDrawer").addEventListener("click", closeDrawer);
 document.getElementById("drawerBackdrop").addEventListener("click", closeDrawer);
 document.getElementById("clearFilter").addEventListener("click", () => { activeCat = null; searchInput.value = ""; priceFilter.value = "all"; renderSidebar(); renderCatalog(); });
 document.getElementById("modalAdd").addEventListener("click", () => { if (modalProduct) { addToCart(modalProduct); document.getElementById("productModal").close(); } });
+document.getElementById("productModal").addEventListener("click", (e) => { if (e.target === document.getElementById("productModal")) document.getElementById("productModal").close(); });
 searchInput.addEventListener("input", renderCatalog);
 priceFilter.addEventListener("change", renderCatalog);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
