@@ -215,6 +215,57 @@ const catalog = document.getElementById("catalog");
 const searchInput = document.getElementById("searchInput");
 const priceFilter = document.getElementById("priceFilter");
 const resultCount = document.getElementById("resultCount");
+const categoryIntroEl = document.getElementById("categoryIntro");
+const CAT_INTRO = {
+  "MÁY TIỆN REN ỐNG": "Máy tiện ren ống dùng để tạo ren cho ống thép trong thi công hệ thống ống nước, ống cứu hỏa và cơ khí, giúp mối nối ren kín và chắc chắn.",
+  "MÁY CẮT ỐNG THỦY LỰC - MÁY LĂN RÃNH ỐNG": "Máy cắt ống thủy lực và máy lăn rãnh ống phục vụ thi công, lắp đặt hệ thống ống thép, cho đường cắt và rãnh ống đều, đúng kỹ thuật.",
+  "MÁY THỦY BÌNH": "Máy thủy bình dùng để đo cao độ, truyền cao độ và san nền trong thi công xây dựng, giao thông và khảo sát công trình.",
+  "MÁY ĐỘT THỦY LỰC": "Máy đột thủy lực dùng để đột lỗ trên thép tấm, thép góc và thanh cái trong gia công cơ khí và thi công điện.",
+  "BƠM THỬ ÁP ASADA - NHẬT": "Bơm thử áp Asada dùng để kiểm tra áp suất đường ống và hệ thống thủy lực trước khi đưa vào sử dụng.",
+  "MÁY UỐN ỐNG THỦY LỰC": "Máy uốn ống thủy lực dùng để uốn cong ống thép theo góc thi công, phục vụ lắp đặt hệ thống ống và kết cấu thép.",
+  "MÁY KHOAN TỪ - MAGTRON": "Máy khoan từ Magtron dùng để khoan lỗ trên thép tấm và kết cấu thép tại công trường, nhờ đế từ giữ máy chắc chắn khi khoan.",
+  "KIM CẮT CÁP": "Kim cắt cáp dùng để cắt cáp điện, cáp thép và dây cáp trong thi công điện và lắp đặt công trình.",
+  "THIẾT BỊ ĐO BẰNG LAZER": "Thiết bị đo bằng lazer dùng để đo khoảng cách, diện tích và cao độ nhanh trong khảo sát và thi công.",
+  "THƯỚC ĐO BÁNH XE": "Thước đo bánh xe dùng để đo khoảng cách trên mặt đường, mặt bằng và công trình ngoài trời.",
+  "THIẾT BỊ CÂN BẰNG TỰ ĐỘNG BẰNG TIA LAZER": "Thiết bị cân bằng tự động bằng tia lazer dùng để lấy mặt phẳng chuẩn, căn thẳng hàng và cân bằng trong thi công xây dựng và lắp đặt.",
+  "MÁY TOÀN ĐẠC. KÍNH VĨ": "Máy toàn đạc và kính vĩ dùng để đo góc, đo khoảng cách và xác định vị trí điểm trong khảo sát địa hình và thi công công trình.",
+  "MŨI KHOAN NACHI": "Mũi khoan Nachi dùng để khoan kim loại trong gia công cơ khí, cho lỗ khoan đúng kích thước và bền mũi.",
+  "KIM ÉP COS THỦY LỰC": "Kim ép cos thủy lực dùng để ép đầu cos vào dây cáp điện, đảm bảo mối nối chắc chắn và tiếp xúc tốt.",
+  "DỤNG CỤ ĐO-MITUTOYO": "Dụng cụ đo Mitutoyo dùng để kiểm tra kích thước, độ dày và dung sai chi tiết trong gia công cơ khí và kiểm tra chất lượng.",
+  "MÁY HÀN ỐNG HDPE": "Máy hàn ống HDPE dùng để hàn nối ống nhựa HDPE trong thi công hệ thống cấp thoát nước và hạ tầng.",
+  "THIẾT BỊ ĐO & KIỂM TRA KL": "Thiết bị đo và kiểm tra KL dùng để đo, kiểm tra các thông số kỹ thuật trong thi công và bảo trì thiết bị.",
+  "DỤNG CỤ ĐIỆN METABO-BOSCH": "Dụng cụ điện Metabo và Bosch phục vụ khoan, cắt, mài và thi công lắp đặt trong xây dựng và cơ khí.",
+  "MÁY GIA CÔNG THANH CÁI": "Máy gia công thanh cái dùng để cắt, đột và uốn thanh cái đồng trong thi công tủ điện và hệ thống điện.",
+  "MÁY CHÀ TƯỜNG": "Máy chà tường dùng để chà nhám, làm phẳng bề mặt tường trước khi sơn bả trong thi công hoàn thiện.",
+  "KIM XIẾT ĐAI": "Kim xiết đai dùng để xiết đai thép, đai nhựa cố định kiện hàng và vật tư trong đóng gói và vận chuyển.",
+  "KÍCH THỦY LỰC": "Kích thủy lực dùng để nâng, đội và đỡ tải trọng trong thi công, sửa chữa máy móc và cứu hộ.",
+  "CỬA CẮT ASADA BEAVER - NHẬT": "Cưa cắt Asada Beaver dùng để cắt ống thép và vật liệu kim loại trong thi công và gia công cơ khí.",
+  "THIẾT BỊ ĐO KYORITSU - NHẬT": "Thiết bị đo Kyoritsu dùng để đo và kiểm tra các thông số điện trong thi công, bảo trì và kiểm định hệ thống điện.",
+  "BỘ ĐÀM": "Bộ đàm dùng để liên lạc nội bộ tại công trường, nhà máy và sự kiện, không phụ thuộc sóng điện thoại.",
+  "TIỆN ÍCH, ĐỒ DÙNG, PHỤ TÙNG ÔTÔ": "Tiện ích, đồ dùng và phụ tùng ô tô phục vụ sử dụng hằng ngày và chăm sóc, bảo dưỡng xe.",
+  "MÁY RỬA XE MINI": "Máy rửa xe mini dùng để rửa xe, vệ sinh sân vườn và làm sạch bề mặt bằng áp lực nước."
+};
+const DEFAULT_TITLE = "Thiết bị Minh Quân — Thiết bị xây dựng & công nghiệp | Hà Nội, TP.HCM";
+const DEFAULT_DESC = "Thiết bị Minh Quân: máy đo đạc, máy gia công ống, dụng cụ điện và thiết bị công nghiệp. Chọn danh mục bên trái, xem sản phẩm và gọi điện báo giá. Hà Nội và TP.HCM.";
+const ALL_INTRO = "Thiết bị Minh Quân cung cấp máy đo đạc, máy gia công ống, dụng cụ điện và thiết bị công nghiệp, tư vấn và báo giá qua điện thoại tại Hà Nội và TP.HCM.";
+function updatePageMeta(){
+  const qText = (searchInput.value || "").trim();
+  const titleEl = document.getElementById("shopTitle");
+  const md = document.querySelector('meta[name="description"]');
+  if (activeCat && !qText){
+    const intro = CAT_INTRO[activeCat] || "";
+    document.title = activeCat + " | Thiết bị Minh Quân";
+    if (titleEl) titleEl.textContent = activeCat;
+    if (categoryIntroEl){ categoryIntroEl.textContent = intro; categoryIntroEl.hidden = !intro; }
+    if (md) md.setAttribute("content", intro + " Thiết bị Minh Quân tư vấn và báo giá qua điện thoại tại Hà Nội và TP.HCM.");
+  } else {
+    document.title = DEFAULT_TITLE;
+    if (titleEl) titleEl.textContent = "Danh mục & sản phẩm";
+    if (categoryIntroEl){ categoryIntroEl.textContent = qText ? "" : ALL_INTRO; categoryIntroEl.hidden = !!qText; }
+    if (md) md.setAttribute("content", DEFAULT_DESC);
+  }
+}
+
 const emptyMsg = document.getElementById("emptyMsg");
 
 function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
@@ -277,6 +328,7 @@ function renderSidebar(){
 }
 let expandedGroups = new Set();
 function renderCatalog(){
+  updatePageMeta();
   const list = filtered();
   const qText = (searchInput.value || "").trim();
   const isAllView = !activeCat && !qText && priceFilter.value === "all";

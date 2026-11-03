@@ -31,6 +31,7 @@ a{color:inherit}
 .btn-ghost-light{background:transparent;color:#fff;border-color:#fff}
 .shop-toolbar{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-top:28px;margin-bottom:16px}
 .shop-title{margin:0;font-size:24px}
+.category-intro{max-width:760px;line-height:1.6}
 .shop-toolbar p{margin:4px 0 0;color:var(--muted);font-size:14px}
 .shop-filters{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .sort-label{font-size:14px;color:var(--muted);display:flex;gap:8px;align-items:center}
