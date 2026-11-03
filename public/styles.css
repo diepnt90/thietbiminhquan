@@ -101,8 +101,7 @@ a{color:inherit}
 .support-steps{margin:0;padding:0;list-style:none;display:grid;gap:6px;color:var(--muted);font-size:14px;line-height:1.55;counter-reset:step}
 .support-steps li{counter-increment:step;padding-left:28px;position:relative}
 .support-steps li::before{content:counter(step);position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.support-contact{margin:16px 0 0;font-size:14px;color:var(--muted)}
-.support-contact a{color:var(--navy);font-weight:700;text-decoration:none}
+
 .empty{color:var(--muted);font-size:14px}
 .footer{background:var(--navy);color:#cbd5e1;margin-top:40px;padding:32px 0 20px}
 .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:24px}
