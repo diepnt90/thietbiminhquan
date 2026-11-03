@@ -275,7 +275,7 @@ function renderSidebar(){
     activeCat = null; setCatUrl(); renderSidebar(); renderCatalog();
   }));
 }
-let expandedGroups = new Set([GROUPS[0].name]);
+let expandedGroups = new Set();
 function renderCatalog(){
   const list = filtered();
   const qText = (searchInput.value || "").trim();
